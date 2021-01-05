@@ -1,0 +1,16 @@
+{
+  "name": "code-for-bwi",
+  "version": "1.0.0",
+  "description": "Benötigte Hardware, Kapazitäten und Nutzwerte",
+  "main": "./src/app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc",
+    "debug": "nodemon --inspect app.js"
+  },
+  "author": "Christopher Mogler",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
+}
