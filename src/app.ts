@@ -26,12 +26,44 @@
         - Liste als HTML, CSV, JSON oder XML ausgeben
 */
 
-import { data, transporter, Hardware, Transporter} from './hardware';
+import { data, transporter, Hardware, Transporter} from './hardware'; 
 
-let maxCap : number = 0;
-data.forEach((d, i) => {
-    let val = d.amountNeed / d.needInt;
-    val = val * d.weight;
-    console.log(val);
-})
-console.log(maxCap); 
+const collection: Hardware[] = data.sort((item, nextItem) => {
+    return nextItem.useValue - item.useValue;
+});
+
+/*
+    Maximale Menge bei 1100 Kg von jeder Hardware
+*/
+let sumNeedValue = 0;
+
+collection.forEach((item, ix) => {
+    sumNeedValue += item.useValue * item.orderQuantity;
+});
+
+transporter.forEach((tra, iT) => {
+    console.log("\r\nTransporter ", iT + 1);
+    let sumCap = 0;
+    let itemCount = 0;
+
+    collection.forEach((item, ix) => {
+        let max = Math.floor(tra.maxCapacity / item.weight);
+        let pro = item.useValue * (item.orderQuantity - (item.receivedQuantity ?? 0)) / sumNeedValue; // Prozentualen Anteil der Summe vom Nutzwert
+        let use = Math.floor(pro * tra.maxCapacity);
+
+        let amount = Math.floor(use / item.weight);
+
+        console.log(item.name, 
+            item.name.length < 23 ? "\t" : "", 
+            max, "\t",
+            pro.toFixed(2), "\t",
+            amount, "\t",
+            amount * item.weight / 1000, "\t",
+        );
+
+        sumCap += amount * item.weight;
+        itemCount += amount;
+        item.receivedQuantity = amount;
+    });
+    console.log(tra.maxCapacity / 1000, "\t", sumCap / 1000, "\t", itemCount);
+});
