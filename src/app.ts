@@ -1,4 +1,3 @@
-
 /*
     Copyright (C) 2021 Christopher Rudolf Karl-Heinz Mogler
 
@@ -24,46 +23,40 @@
     Todo: 
         - Liste über CSV einlesen
         - Liste als HTML, CSV, JSON oder XML ausgeben
+    ------------------------------------------
+    - Sortiere die Liste nach "Nutzerwert" (absteigend) und "Menge" (absteigend)
+    - 
 */
 
-import { data, transporter, Hardware, Transporter} from './hardware'; 
 
-const collection: Hardware[] = data.sort((item, nextItem) => {
-    return nextItem.useValue - item.useValue;
-});
+import { getData, CargoShip, Item } from './Items';
 
-/*
-    Maximale Menge bei 1100 Kg von jeder Hardware
-*/
-let sumNeedValue = 0;
+const main = () => {
+    const cargoShips: CargoShip[] = [
+        new CargoShip(72.4 * 1000, 1100 * 1000),
+        new CargoShip(85.7 * 1000, 1100 * 1000)    
+    ];
+    
+    const stock: Item[] = getData();
+    if(stock.length < 1){
+        console.log("Error: Can evaulate empty data!");
+        return -1;
+    }
 
-collection.forEach((item, ix) => {
-    sumNeedValue += item.useValue * item.orderQuantity;
-});
-
-transporter.forEach((tra, iT) => {
-    console.log("\r\nTransporter ", iT + 1);
-    let sumCap = 0;
-    let itemCount = 0;
-
-    collection.forEach((item, ix) => {
-        let max = Math.floor(tra.maxCapacity / item.weight);
-        let pro = item.useValue * (item.orderQuantity - (item.receivedQuantity ?? 0)) / sumNeedValue; // Prozentualen Anteil der Summe vom Nutzwert
-        let use = Math.floor(pro * tra.maxCapacity);
-
-        let amount = Math.floor(use / item.weight);
-
-        console.log(item.name, 
-            item.name.length < 23 ? "\t" : "", 
-            max, "\t",
-            pro.toFixed(2), "\t",
-            amount, "\t",
-            amount * item.weight / 1000, "\t",
-        );
-
-        sumCap += amount * item.weight;
-        itemCount += amount;
-        item.receivedQuantity = amount;
+    console.log("Start");
+    stock.forEach(d => console.log(d.toString()));
+    
+    cargoShips.forEach((cargo, i) =>{
+        console.log("Cargo " + (i+1))
+        cargo.fill(stock)
+        cargo.getInventory().forEach(i => console.log(i.toString()));
+        console.log(cargo.toString());
     });
-    console.log(tra.maxCapacity / 1000, "\t", sumCap / 1000, "\t", itemCount);
-});
+    
+    console.log("Rest");
+    stock.forEach(d => console.log(d.toString()));
+
+    return 1;
+}
+
+main();
