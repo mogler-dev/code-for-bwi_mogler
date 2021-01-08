@@ -1,0 +1,75 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODE-FOR-BWI</title>
+    <link href="./bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #f0f0f0;
+        }
+        hr{
+            border-top: 1px solid #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CODE-FOR-BWI – Mogler</h1>
+        <hr>
+        <h2>Hardware</h2>
+        <table class="table table-bordered table-sm" id="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>benötigte Anzahl</th>
+                    <th>einzel Gewicht<br>(in g.)</th>
+                    <th>ges. Gewicht<br>(in g.)</th>
+                    <th>Nutzwert<br>(hoch = besser)</th>
+                    <th>ges. Nutzwert</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <hr>
+        <h2>Transporter</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <script>
+        const fillTable = (json) => {
+            let t = document.getElementById("table")
+            
+            json.forEach(item => {
+                let row = document.createElement("tr");
+
+                row.appendChild(col(item["name"]));
+                row.appendChild(col(item["amount"], "Stk."));
+                row.appendChild(col(item["weight"], "g"));
+                row.appendChild(col(item["weight"] * item["amount"], "g"));
+                row.appendChild(col(item["useValue"]));
+                row.appendChild(col(item["useValue"] * item["amount"]));
+
+                t.tBodies[0].appendChild(row);
+            });
+        };
+
+        const col = (item, subfix = "") => {
+            let col = document.createElement("td");
+            col.innerText = `${item}${(subfix !== "" ? (" " + subfix) : "")}`;
+            return col; 
+        }
+
+        fetch('/api/stock').then(res => res.json())
+        .then(json=> fillTable(json))
+        .catch(ex => console.log(ex));
+    </script>
+</body>
+</html>
