@@ -28,10 +28,11 @@
     - 
 */
 
-
+import { start_server } from './server'
 import { getData, CargoShip, Item } from './Items';
 
 const main = () => {
+    const server = start_server();
     const cargoShips: CargoShip[] = [
         new CargoShip(72.4 * 1000, 1100 * 1000),
         new CargoShip(85.7 * 1000, 1100 * 1000)    
