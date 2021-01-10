@@ -42,7 +42,7 @@ Jetzt sollten Sie zwei Tabellen sehen, die erste mit den Hardwareliste und die z
 
 ### Algorithmus 
 
-Der Algorithmus Summiert die Nutzwerte der jeweils einzelnen Objekte, und läuft rekrusive durch bis zum letzten Objekt, zieht dabei die selektierten Objekte vom Variablen Container ab. Die Liste wird Sortiert nach der Summe der Nutzwerte (Nutzwert mal Mege), dabei absteigen (größtes als erstes). 
+Der Algorithmus Summiert die Nutzwerte der jeweils einzelnen Objekte, und läuft rekrusive durch bis zum letzten Objekt, zieht dabei die selektierten Objekte vom Variablen Container ab. Die Liste wird sortiert nach der Summe der Nutzwerte (Nutzwert mal Menge), dabei absteigend nach der größe (größtes als erstes). 
 
 ---------------------
 
