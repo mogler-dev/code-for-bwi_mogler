@@ -29,33 +29,10 @@
 */
 
 import { start_server } from './server'
-import { getData, CargoShip, Item } from './Items';
+
 
 const main = () => {
     const server = start_server();
-    const cargoShips: CargoShip[] = [
-        new CargoShip(72.4 * 1000, 1100 * 1000),
-        new CargoShip(85.7 * 1000, 1100 * 1000)    
-    ];
-    
-    const stock: Item[] = getData();
-    if(stock.length < 1){
-        console.log("Error: Can evaulate empty data!");
-        return -1;
-    }
-
-    console.log("Start");
-    stock.forEach(d => console.log(d.toString()));
-    
-    cargoShips.forEach((cargo, i) =>{
-        console.log("Cargo " + (i+1))
-        cargo.fill(stock)
-        cargo.getInventory().forEach(i => console.log(i.toString()));
-        console.log(cargo.toString());
-    });
-    
-    console.log("Rest");
-    stock.forEach(d => console.log(d.toString()));
 
     return 1;
 }

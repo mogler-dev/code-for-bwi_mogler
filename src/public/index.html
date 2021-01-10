@@ -6,69 +6,189 @@
     <link href="./bootstrap/bootstrap.min.css" rel="stylesheet" />
     <style>
         body {
-            background-color: #0f0f0f;
+            background-color: #292929;
             color: #f0f0f0;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
         hr{
             border-top: 1px solid #f0f0f0;
+        }
+        .head {
+            background-color: #746f6f;
+            border-top: 4px solid #f0f0f0;
+        }
+        .summe{
+            background-color: #5b705f;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>CODE-FOR-BWI – Mogler</h1>
+        <div class="container-fluid">
+            <h1>CODE-FOR-BWI – Mogler</h1>
+        </div>
         <hr>
-        <h2>Hardware</h2>
-        <table class="table table-bordered table-sm" id="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>benötigte Anzahl</th>
-                    <th>einzel Gewicht<br>(in g.)</th>
-                    <th>ges. Gewicht<br>(in g.)</th>
-                    <th>Nutzwert<br>(hoch = besser)</th>
-                    <th>ges. Nutzwert</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div class="container-fluid">
+            <h2>Hardware</h2>
+            <table class="table table-bordered table-sm" id="stock">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>benötigte Anzahl</th>
+                        <th>einzel Gewicht<br>(in g.)</th>
+                        <th>ges. Gewicht<br>(in g.)</th>
+                        <th>Nutzwert<br>(hoch = besser)</th>
+                        <th>ges. Nutzwert</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
         <hr>
-        <h2>Transporter</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th></th>
-                </tr>
-            </thead>
-        </table>
+        <div class="container-fluid">
+            <h2>Transporter</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <hr>
+        <div class="container-fluid">
+            <h2>Transportliste (Lösung)</h2>
+            <table class="table table-bordered table-sm" id="shipping">
+                <thead>
+                    <tr class="head">
+                        <th rowspan="3">Transporter ID</th>
+                        <th>Max. Kapazität (in kg)</th>
+                        <th>Fahrer Gewicht (in kg)</th>
+                        <th colspan="4"></th>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Beladene Menge (Stk.)</th>
+                        <th>einzl. Gewicht (in g.)</th>
+                        <th>ges. Gewicht (in g.)</th>
+                        <th>einzl. Nutzwert</th>
+                        <th>ges. Nutzwert</th>
+                    </tr>
+                    <tr class="summe">
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Gewichtssumme</th>
+                        <th></th>
+                        <th>Nutzwert Summe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col align-center">
+                <span>2021 &copy; Copyrights by <a target="_blank" href="https://mogler.dev/">Christopher Mogler</a></span>
+            </div>
+        </div>
     </div>
     <script>
-        const fillTable = (json) => {
-            let t = document.getElementById("table")
-            
-            json.forEach(item => {
-                let row = document.createElement("tr");
-
-                row.appendChild(col(item["name"]));
-                row.appendChild(col(item["amount"], "Stk."));
-                row.appendChild(col(item["weight"], "g"));
-                row.appendChild(col(item["weight"] * item["amount"], "g"));
-                row.appendChild(col(item["useValue"]));
-                row.appendChild(col(item["useValue"] * item["amount"]));
-
-                t.tBodies[0].appendChild(row);
-            });
-        };
-
         const col = (item, subfix = "") => {
             let col = document.createElement("td");
-            col.innerText = `${item}${(subfix !== "" ? (" " + subfix) : "")}`;
+            col.innerText = item ? `${item}${(subfix !== "" ? (" " + subfix) : "")}` : "";
             return col; 
         }
 
+
+        const row = (item) => {
+            let d_row = document.createElement("tr");
+
+            d_row.appendChild(col(item["name"]));
+            d_row.appendChild(col(item["amount"], "Stk."));
+            d_row.appendChild(col(item["weight"], "g"));
+            d_row.appendChild(col(item["weight"] * item["amount"], "g"));
+            d_row.appendChild(col(item["useValue"]));
+            d_row.appendChild(col(item["useValue"] * item["amount"]));
+
+            return d_row;
+        }
+
+    </script>
+    <script>
+        const fillStockTable = (json) => {
+            let t = document.getElementById("stock")
+            
+            json.forEach(item => {
+                t.tBodies[0].appendChild(row(item));
+            });
+        };
         fetch('/api/stock').then(res => res.json())
-        .then(json=> fillTable(json))
+            .then(json=> fillStockTable(json))
+            .catch(ex => console.log(ex));
+    </script>
+    <script>
+        const fillShippingTable = (stock, table) => {
+            let sum = {
+                weight: 0,
+                useValue: 0,
+            }
+           
+            stock.forEach(item => {
+                let a = item["amount"]
+                sum.weight += item["weight"] * a;
+                sum.useValue += item["useValue"] * a;
+                table.tBodies[0].appendChild(row(item));
+            });
+
+            let d_row = document.createElement("tr");
+            d_row.className = "summe";
+
+            let d_col = document.createElement("td");
+            d_col.colSpan = 3;
+            d_row.appendChild(d_col);
+
+            d_row.appendChild(col(sum["weight"], "g"));
+            
+            d_col = document.createElement("td");
+            d_row.appendChild(d_col);
+
+            d_row.appendChild(col(sum["useValue"]));
+                        
+            table.tBodies[0].appendChild(d_row);
+        }
+        const forCargo = (json) => {
+            let table = document.getElementById("shipping"); 
+            json.forEach((cargo, i) => {
+                let row = document.createElement("tr");
+                row.className = "head";
+
+                let cH = col(i + 1);
+
+                cH.rowSpan = cargo.inventory.length + 2;
+                row.appendChild(cH);
+
+                cH = col(cargo["capacity"] / 1000, "kg")
+                row.appendChild(cH);
+
+                cH = col(cargo["driverWeight"] / 1000, "kg")
+                row.appendChild(cH);
+
+                cH = col("")
+                cH.colSpan = 4;
+                row.appendChild(cH);
+                
+                table.tBodies[0].appendChild(row);
+
+                fillShippingTable(cargo.inventory, table);
+            });
+        }
+
+
+        fetch('/api/shipping').then(res => res.json())
+        .then(json=> forCargo(json))
         .catch(ex => console.log(ex));
     </script>
 </body>

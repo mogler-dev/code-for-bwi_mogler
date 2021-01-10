@@ -16,6 +16,7 @@
 */
 import * as express from 'express';
 import * as fs from 'fs'
+import { getData, CargoShip, Item } from './Items';
 
 const app = express();
 
@@ -53,6 +54,39 @@ const getHardware = (res) => {
     }
 }
 
+const cargoShips: CargoShip[] = [
+    new CargoShip(72.4 * 1000, 1100 * 1000),
+    new CargoShip(85.7 * 1000, 1100 * 1000)    
+];
+
+const getTransporter = (req, res) => {
+    res.json(cargoShips);
+    res.end();
+}
+
+const getTransportList = (req, res) => {
+    const stock: Item[] = getData();
+    if(stock.length < 1){
+        res.status(404);
+        res.json({msg: "Error: Can evaulate empty data!"});
+        res.end();
+        return -1;
+    }
+    
+    cargoShips.forEach((cargo, i) =>{
+        cargo.fill(stock)
+    });
+    try{
+        fs.writeFileSync('solution.json', JSON.stringify(cargoShips));
+    }
+    catch(ex){
+        console.log(ex);
+    }
+
+    res.json(cargoShips);
+    res.end();
+}
+
 router.use((req, res, next) => {
     if(req.originalUrl.split('/').filter((v) => v === "api").length > 0){
         next();
@@ -62,6 +96,8 @@ router.use((req, res, next) => {
 });
 
 api.get("/stock", (req, res) => getHardware(res));
+api.get("/shipping", (req, res) => getTransportList(req, res));
+api.get("/transporter", (req, res) => getTransporter(req, res));
 
 app.use("*", router);
 app.use("/api/", api);

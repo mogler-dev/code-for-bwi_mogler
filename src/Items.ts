@@ -82,7 +82,10 @@ export class CargoShip {
 
     addItem = (addItem: Item, amount: number) => this.inventory.push(addItem.split(amount));
 
-    fill = (items: Item[]) => fillCargoShip(items, this);
+    fill = (items: Item[]) => { 
+        this.inventory = [];
+        return fillCargoShip(items, this)
+    }
 
     toString = () => `Kapazität mit Fahrer: ${this.getCapacity() / 1000} kg; \taktueller Nutzwert: ${this.getSumUseValue()} NW; \tRest Kapazität: ${this.getRestCapacity() / 1000} kg;`;
 
@@ -146,8 +149,6 @@ export const fillCargoShip = (items: Item[], cargoShip: CargoShip) => {
         restUseValue,
         restSpace,
     }
-
-    let sumUseValue = 0;
 
     items.forEach((item, index) => {
         let loadItem = evalLoadItems(item, lastLoadItem);
