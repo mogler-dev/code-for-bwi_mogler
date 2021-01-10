@@ -10,7 +10,7 @@ Die Nutzer in Bonn benötigen die verschiedenen Notebooks, Telefone und Tabletts
 
 ### Software
 
-Die unten aufgelistete Software benötigen Sie:
+Folgende Software wird benötigt:
 
 - NodeJS (https://nodejs.org/en/download/current/)
 - NPM (wird von NodeJS mit bereitgestellt)
@@ -28,12 +28,12 @@ Sie können den Source-Code auf zwei Arten herunterladen:
 ### NodeJS und NPM
 
 Öffnen Sie das Terminal / CMD und ändern Sie den Ordner mit dem Source-Code (nicht ./src/ !!).
-Führen Sie danach den Befehl ```npm install``` aus um die benötigten Packages von NPM herunterzuladen (dies kann einige Minuten dauern).
+Führen Sie danach den Befehl ```npm install``` aus, um die benötigten Packages von NPM herunterzuladen (dies kann einige Minuten dauern).
 Jetzt sollte sich ein Ordner "./node_modules/" erstellt haben. 
 
-Jetzt führen Sie diesen Befehl aus ```npm run start```
+Nun führen Sie diesen Befehl aus ```npm run start```
 Sie sollten in der Konsole diesen Befehl erhalten: "Server is now listening  :: : 3000"
-Bitte beachten Sie das der Port 3000 nicht besetzt sein darf, von einem anderen Programm.
+Bitte beachten Sie, dass der Port 3000 nicht von einem anderen Programm besetzt sein darf.
 
 Öffnen Sie bitte Ihren Browser (Firefox, Chrome, Opera, Safari, neuer Edge) unter diesem Link http://localhost:3000
 Jetzt sollten Sie zwei Tabellen sehen, die erste mit den Hardwareliste und die zweite mit der eigentlichen Lösung.
@@ -42,7 +42,7 @@ Jetzt sollten Sie zwei Tabellen sehen, die erste mit den Hardwareliste und die z
 
 ### Algorithmus 
 
-Der Algorithmus Summiert die Nutzwerte der jeweils einzelnen Objekte, und läuft rekrusive durch bis zum letzten Objekt, zieht dabei die selektierten Objekte vom Variablen Container ab. Die Liste wird sortiert nach der Summe der Nutzwerte (Nutzwert mal Menge), dabei absteigend nach der größe (größtes als erstes). 
+Der Algorithmus Summiert die Nutzwerte der jeweils einzelnen Objekte und läuft rekrusive durch bis zum letzten Objekt, zieht dabei die selektierten Objekte vom Variablen Container ab. Die Liste wird sortiert nach der Summe der Nutzwerte (Nutzwert mal Menge), dabei absteigend nach der Größe (größtes als erstes). 
 
 ---------------------
 
