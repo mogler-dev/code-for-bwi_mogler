@@ -14,19 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-/**
-    -----------------------------------------
-    Was ist die optimale Beladung (Summe der Nutzwerte), wenn die beiden Transporter jeweils einmal fahren können? 
-     Erstelle einen Algorithmus, der die bestmögliche Ladeliste für jeden der beiden Transporter ermittelt.
-
-    -----------------------------------------
-    Todo: 
-        - Liste über CSV einlesen
-        - Liste als HTML, CSV, JSON oder XML ausgeben
-    ------------------------------------------
-    - Sortiere die Liste nach "Nutzerwert" (absteigend) und "Menge" (absteigend)
-    - 
-*/
 
 import { start_server } from './server'
 
